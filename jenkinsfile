@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKER_IMAGE = 'flask-app:latest'
+    }
+
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    sh 'docker build -t $DOCKER_IMAGE .'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    // You can add a unit test step here (e.g., using pytest for Flask)
+                    echo 'Running tests (placeholder for now)'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Cleaning up...'
+            sh 'docker-compose down'
+        }
+    }
+}
+
